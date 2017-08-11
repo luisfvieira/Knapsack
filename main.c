@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "item.h"
-
+#include "knapsack.h"
 int main(int argc, char const *argv[])
 {
     //  Some argument is necessary to specify the file and time limit
@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
 
     FILE *instFile;
     Item *itens;
+    Knapsack knapsack;
     int itensNum, capacity;
     // double timeLimit = atoll(argv[2]) * 1000.0;
 
