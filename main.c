@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#include "item.h"
 #include "knapsack.h"
+
 int main(int argc, char const *argv[])
 {
     //  Some argument is necessary to specify the file and time limit
@@ -21,10 +20,13 @@ int main(int argc, char const *argv[])
         printf("Error\nFile doesn't open properly.\n");
         exit(1);
     }
+
     fscanf(instFile, "%d", &itensNum);
     fscanf(instFile, "%d", &capacity);
     printf("itens: %d\ncapacity: %d\n", itensNum, capacity);
     itens = (Item *) malloc(sizeof(Item) * itensNum);
+    for (int i = 0; i < itensNum; i++)
+        itens[i].itemId = i;
     for (int i = 0; i < itensNum; i++)
         fscanf(instFile, "%d", &itens[i].profit);
     for (int i = 0; i < itensNum; i++)
@@ -35,6 +37,7 @@ int main(int argc, char const *argv[])
         for (int j = 0; j < itens[i].conflictNum; j++)
             fscanf(instFile, "%d", &itens[i].conflitantItems[j]);
     }
+
     //  Print Itens
     for (int i = 0; i < itensNum; i++) {
         printf("%d: %d\t%d\t%d\t", i, itens[i].profit, itens[i].weight,
@@ -45,6 +48,7 @@ int main(int argc, char const *argv[])
         printf("\n");
     }
 
+    //  Free Allocated Memory
     for (int i = 0; i < itensNum; i++)
         free(itens[i].conflitantItems);
     free(itens);

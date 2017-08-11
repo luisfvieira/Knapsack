@@ -1,3 +1,8 @@
+#include <stdlib.h>
+
+#include "knapsack.h"
+#include "item.h"
+
 #ifndef _KNAPSACK_H
 #define _KNAPSACK_H
 
@@ -8,6 +13,8 @@ typedef struct {
     int profit;
 } Knapsack;
 
-void InitializeKnapsack();
+void InitializeKnapsack(Knapsack, int, int);
+int addItem(Knapsack, Item);
+int removeItem(Knapsack, Item);
 
 #endif
