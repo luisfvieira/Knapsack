@@ -13,7 +13,8 @@ typedef struct {
     int profit;
 } Knapsack;
 
-void InitializeKnapsack(Knapsack, int, int);
+void InitializeKnapsack(int, int);
+int conflictCheck(Knapsack, Item);
 int addItem(Knapsack, Item);
 int removeItem(Knapsack, Item);
 
