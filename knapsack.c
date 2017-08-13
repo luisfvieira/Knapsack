@@ -1,8 +1,10 @@
-#include "item.h"
+#include "knapsack.h"
 
 //  Inicializa a  Mochila
 Knapsack initializeKnapsack(int itensNum, int capacity) {
     Knapsack knapsack;
+
+    knapsack.itensNum = itensNum;
     knapsack.weight = 0;
     knapsack.profit = 0;
     knapsack.capacity = capacity;
@@ -11,6 +13,15 @@ Knapsack initializeKnapsack(int itensNum, int capacity) {
     return knapsack;
 }
 
+//  Copia Uma Mochila
+Knapsack copyKnapsack(Knapsack knapsack) {
+    Knapsack copy;
+
+    copy = knapsack;
+    copy.itens = (int*) calloc(copy.itensNum, sizeof(int));
+
+    return copy;
+}
 //  Verifica por Conflitos na Mochila
 int conflictCheck(Knapsack knapsack, Item item) {
     if (knapsack.itens[item.itemId] != 1 && knapsack.capacity >= item.weight)
@@ -22,7 +33,7 @@ int conflictCheck(Knapsack knapsack, Item item) {
 
 
 int addItem(Knapsack* knapsack, Item item) {
-    if (conflictCheck(knapsack, item) == 1)
+    if (conflictCheck(*knapsack, item) == 1) {
         knapsack->weight += item.weight;
         knapsack->profit += item.profit;
         knapsack->capacity -= item.weight;
@@ -30,12 +41,11 @@ int addItem(Knapsack* knapsack, Item item) {
 
         return 1;
     }
-    else
-        return 0;
+    return 0;
 }
 
 int removeItem(Knapsack* knapsack, Item item) {
-    if (knapsack->itens[itemId] == 1)
+    if (knapsack->itens[item.itemId] == 1) {
         knapsack->weight -= item.weight;
         knapsack->profit -= item.profit;
         knapsack->capacity += item.weight;
@@ -45,4 +55,18 @@ int removeItem(Knapsack* knapsack, Item item) {
     }
     else
         return 0;
+}
+
+int exchangeItem(Knapsack* knapsack, Item item1, Item item2) {
+    Knapsack knapsackAux = copyKnapsack(*knapsack);
+    int removeAnswer, addAnswer;
+
+    removeAnswer = removeItem(&knapsackAux, item1);
+    addAnswer = addItem(&knapsackAux, item2);
+
+    if (removeAnswer == 1 && addAnswer == 1) {
+        *knapsack = copyKnapsack(knapsackAux);
+        return 1;
+    }
+    return 0;
 }
