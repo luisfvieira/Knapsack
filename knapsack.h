@@ -7,6 +7,7 @@
 
 typedef struct {
     int* itens;
+    int ** conflicts;
     int itensNum;
     int weight;
     int capacity;
@@ -19,4 +20,5 @@ int conflictCheck(Knapsack, Item);
 int addItem(Knapsack*, Item);
 int removeItem(Knapsack*, Item);
 int exchangeItem(Knapsack*, Item, Item);
+
 #endif

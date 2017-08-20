@@ -2,6 +2,10 @@
 
 #include "knapsack.h"
 
+Knapsack BestImprovement(Knapsack, Item*);
+void printKnapsack(Knapsack);
+void printItens(Item*, int);
+
 int main(int argc, char const *argv[])
 {
     //  Some argument is necessary to specify the file and time limit
@@ -25,6 +29,8 @@ int main(int argc, char const *argv[])
     fscanf(instFile, "%d", &capacity);
     printf("itens: %d\ncapacity: %d\n", itensNum, capacity);
     itens = (Item *) malloc(sizeof(Item) * itensNum);
+    knapsack = initializeKnapsack(itensNum, capacity);
+    printKnapsack(knapsack);
     for (int i = 0; i < itensNum; i++)
         itens[i].itemId = i;
     for (int i = 0; i < itensNum; i++)
@@ -37,21 +43,38 @@ int main(int argc, char const *argv[])
         for (int j = 0; j < itens[i].conflictNum; j++)
             fscanf(instFile, "%d", &itens[i].conflitantItems[j]);
     }
-
-    //  Print Itens
-    for (int i = 0; i < itensNum; i++) {
-        printf("%d: %d\t%d\t%d\t", i, itens[i].profit, itens[i].weight,
-            itens[i].conflictNum);
-
-        for (int j = 0; j < itens[i].conflictNum; j++)
-            printf("%d\t", itens[i].conflitantItems[j]);
-        printf("\n");
-    }
-
+    printItens(itens, itensNum);
+    knapsack = BestImprovement(knapsack, itens);
+    printKnapsack(knapsack);
+    knapsack = BestImprovement(knapsack, itens);
+    printKnapsack(knapsack);
     //  Free Allocated Memory
     for (int i = 0; i < itensNum; i++)
         free(itens[i].conflitantItems);
     free(itens);
 
     return 0;
+}
+
+void printKnapsack(Knapsack knapsack) {
+    printf("Knapsack\nCapacity: %d\nProfit: %d\nWeight: %d\n", knapsack.capacity,
+        knapsack.profit, knapsack.weight);
+    printf("ItensNum: %d\n", knapsack.itensNum);
+    for (int i = 0; i < knapsack.itensNum; i++) {
+        printf("%d ", knapsack.itens[i]);
+    }
+    printf("\n");
+}
+
+void printItens(Item* itens, int itensNum) {
+    //  Print Itens
+    printf("#\tprofit\tweight\tconflict\n");
+    for (int i = 0; i < itensNum; i++) {
+        printf("%d\t%d\t%d\t%d\t", i, itens[i].profit, itens[i].weight,
+            itens[i].conflictNum);
+
+        for (int j = 0; j < itens[i].conflictNum; j++)
+            printf("%d\t", itens[i].conflitantItems[j]);
+        printf("\n");
+    }
 }

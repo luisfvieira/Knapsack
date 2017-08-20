@@ -1,4 +1,4 @@
-#include "knapsack.h"
+C#include "knapsack.h"
 
 //  Inicializa a  Mochila
 Knapsack initializeKnapsack(int itensNum, int capacity) {
@@ -9,6 +9,9 @@ Knapsack initializeKnapsack(int itensNum, int capacity) {
     knapsack.profit = 0;
     knapsack.capacity = capacity;
     knapsack.itens = (int*) calloc(itensNum, sizeof(int));
+    knapsack.conflicts = (int **) calloc(itensNum, sizeof(int));
+    for (int i = 0; i < itensNum; i++)
+        knapsack.conflicts
 
     return knapsack;
 }
@@ -19,7 +22,8 @@ Knapsack copyKnapsack(Knapsack knapsack) {
 
     copy = knapsack;
     copy.itens = (int*) calloc(copy.itensNum, sizeof(int));
-
+    for (int i = 0; i < knapsack.itensNum; i++)
+        copy.itens[i] = knapsack.itens[i];
     return copy;
 }
 //  Verifica por Conflitos na Mochila
@@ -36,7 +40,6 @@ int addItem(Knapsack* knapsack, Item item) {
     if (conflictCheck(*knapsack, item) == 1) {
         knapsack->weight += item.weight;
         knapsack->profit += item.profit;
-        knapsack->capacity -= item.weight;
         knapsack->itens[item.itemId] = 1;
 
         return 1;
@@ -48,13 +51,11 @@ int removeItem(Knapsack* knapsack, Item item) {
     if (knapsack->itens[item.itemId] == 1) {
         knapsack->weight -= item.weight;
         knapsack->profit -= item.profit;
-        knapsack->capacity += item.weight;
         knapsack->itens[item.itemId] = 0;
 
         return 1;
     }
-    else
-        return 0;
+    return 0;
 }
 
 int exchangeItem(Knapsack* knapsack, Item item1, Item item2) {
