@@ -1,17 +1,22 @@
-C#include "knapsack.h"
+#include "knapsack.h"
 
 //  Inicializa a  Mochila
-Knapsack initializeKnapsack(int itensNum, int capacity) {
+Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     Knapsack knapsack;
 
     knapsack.itensNum = itensNum;
     knapsack.weight = 0;
     knapsack.profit = 0;
     knapsack.capacity = capacity;
+    //  Inicializa as posicoes de memoria
     knapsack.itens = (int*) calloc(itensNum, sizeof(int));
-    knapsack.conflicts = (int **) calloc(itensNum, sizeof(int));
+    knapsack.conflicts = (int **) calloc(itensNum, sizeof(int*));
     for (int i = 0; i < itensNum; i++)
-        knapsack.conflicts
+        knapsack.conflicts[i] = (int *) calloc(itensNum, sizeof(int));
+    //  Preenche com as restricoes
+    for (int i = 0; i < itensNum; i++)
+        for (int j = 0; j < itensNum; j++)
+            knapsack.conflicts[i][j] = conflicts[i][j];
 
     return knapsack;
 }
@@ -26,16 +31,20 @@ Knapsack copyKnapsack(Knapsack knapsack) {
         copy.itens[i] = knapsack.itens[i];
     return copy;
 }
+
 //  Verifica por Conflitos na Mochila
 int conflictCheck(Knapsack knapsack, Item item) {
-    if (knapsack.itens[item.itemId] != 1 && knapsack.capacity >= item.weight)
+    if (knapsack.itens[item.itemId] == 1 || knapsack.capacity < knapsack.weight + item.weight)
+        return 0;
+    else
         for (int i = 0; i < item.conflictNum; i++)
             if (knapsack.itens[item.conflitantItems[i]] == 1)
                 return 0;
+
     return 1;
 }
 
-
+//  Adiciona um Item a Mochila
 int addItem(Knapsack* knapsack, Item item) {
     if (conflictCheck(*knapsack, item) == 1) {
         knapsack->weight += item.weight;
@@ -47,6 +56,7 @@ int addItem(Knapsack* knapsack, Item item) {
     return 0;
 }
 
+//  Remove um Item da Mochila
 int removeItem(Knapsack* knapsack, Item item) {
     if (knapsack->itens[item.itemId] == 1) {
         knapsack->weight -= item.weight;
@@ -58,6 +68,7 @@ int removeItem(Knapsack* knapsack, Item item) {
     return 0;
 }
 
+//  Troca um Item da Mochila, por Outro
 int exchangeItem(Knapsack* knapsack, Item item1, Item item2) {
     Knapsack knapsackAux = copyKnapsack(*knapsack);
     int removeAnswer, addAnswer;

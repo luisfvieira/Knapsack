@@ -22,18 +22,20 @@ Knapsack BestImprovement(Knapsack knapsack, Item* itens) {
         if (addItem(&nextKnapsack, itens[i]) == 1) {
             if (nextKnapsack.profit > currentKnapsack.profit)
                 currentKnapsack = copyKnapsack(nextKnapsack);
+            delete = 0;
+
         }
         else {
             for (int j = 0; j < knapsack.itensNum; j++)
-                if (exchangeItem(&nextKnapsack, itens[i], itens[j]) == 1)
-                    if (nextKnapsack.profit > currentKnapsack.profit) {
+                if (exchangeItem(&nextKnapsack, itens[i], itens[j]) == 1) {
+                    if (nextKnapsack.profit > currentKnapsack.profit)
                         currentKnapsack = copyKnapsack(nextKnapsack);
-                        delete = 0;
-                    }
+                    delete = 0;
+                }
         }
-        if (delete == 1)
-            if (removeItem(&nextKnapsack, itens[i]) == 0)
-                printf("Warning! Item wasn't removed!\n");
+        // if (delete == 1)
+        //     if (removeItem(&nextKnapsack, itens[i]) == 0)
+        //         printf("Warning! Item wasn't removed!\n");
     }
     return currentKnapsack;
 }

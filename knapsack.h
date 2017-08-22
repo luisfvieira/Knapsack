@@ -14,7 +14,7 @@ typedef struct {
     int profit;
 } Knapsack;
 
-Knapsack initializeKnapsack(int, int);
+Knapsack initializeKnapsack(int, int, int**);
 Knapsack copyKnapsack(Knapsack);
 int conflictCheck(Knapsack, Item);
 int addItem(Knapsack*, Item);
