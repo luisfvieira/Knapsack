@@ -29,6 +29,10 @@ Knapsack copyKnapsack(Knapsack knapsack) {
     copy.itens = (int*) calloc(copy.itensNum, sizeof(int));
     for (int i = 0; i < knapsack.itensNum; i++)
         copy.itens[i] = knapsack.itens[i];
+    for (int i = 0; i < knapsack.itensNum; i++)
+        for (int j = 0; j < knapsack.itensNum; j++)
+            copy.conflicts[i][j] = knapsack.conflicts[i][j];
+
     return copy;
 }
 
@@ -37,10 +41,11 @@ int conflictCheck(Knapsack knapsack, Item item) {
     if (knapsack.itens[item.itemId] == 1 || knapsack.capacity < knapsack.weight + item.weight)
         return 0;
     else
-        for (int i = 0; i < item.conflictNum; i++)
-            if (knapsack.itens[item.conflitantItems[i]] == 1)
+        for (int i = 0; i < knapsack.itensNum; i++) {
+            if (knapsack.itens[i] == 1 && (knapsack.conflicts[item.itemId][i] == 1 ||
+                knapsack.conflicts[i][item.itemId] == 1))
                 return 0;
-
+        }
     return 1;
 }
 
