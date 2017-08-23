@@ -22,6 +22,7 @@ int main(int argc, char const *argv[]) {
     int **conflicts;
     double timeLimit = atoll(argv[2]) * 1000.0;
 
+
     if ((instFile = fopen(argv[1], "rt")) == NULL) {
         printf("Error\nFile doesn't open properly.\n");
         exit(1);
