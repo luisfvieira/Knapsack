@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "knapsack.h"
-
+Knapsack BVNS(Knapsack, Item *, int, double);
 Knapsack BestImprovement(Knapsack, Item*);
 void printKnapsack(Knapsack);
 void printItens(Item*, int);
@@ -18,7 +20,7 @@ int main(int argc, char const *argv[]) {
     Knapsack knapsack;
     int itensNum, capacity;
     int **conflicts;
-    // double timeLimit = atoll(argv[2]) * 1000.0;
+    double timeLimit = atoll(argv[2]) * 1000.0;
 
     if ((instFile = fopen(argv[1], "rt")) == NULL) {
         printf("Error\nFile doesn't open properly.\n");
@@ -49,15 +51,9 @@ int main(int argc, char const *argv[]) {
         }
     }
     knapsack = initializeKnapsack(itensNum, capacity, conflicts);
-    printKnapsack(knapsack);
     printItens(itens, itensNum);
-    knapsack = BestImprovement(knapsack, itens);
     printKnapsack(knapsack);
-    knapsack = BestImprovement(knapsack, itens);
-    printKnapsack(knapsack);
-    knapsack = BestImprovement(knapsack, itens);
-    printKnapsack(knapsack);
-    knapsack = BestImprovement(knapsack, itens);
+    knapsack = BVNS(knapsack, itens, knapsack.itensNum, timeLimit);
     printKnapsack(knapsack);
 
     //  Free Allocated Memory
@@ -81,7 +77,12 @@ void printKnapsack(Knapsack knapsack) {
     for (int i = 0; i < knapsack.itensNum; i++) {
         printf("%d ", knapsack.itens[i]);
     }
-    printf("\n");
+    printf("\nGraph\n");
+    for (int i = 0; i < knapsack.itensNum; i++) {
+        for (int j = 0; j < knapsack.itensNum; j++)
+            printf("%d ", knapsack.conflicts[i][j]);
+        printf("\n");
+    }
 }
 
 void printItens(Item* itens, int itensNum) {
