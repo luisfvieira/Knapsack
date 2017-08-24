@@ -14,6 +14,7 @@ typedef struct {
 } Knapsack;
 
 Knapsack initializeKnapsack(int, int, int**);
+void terminateKnapsack(Knapsack*);
 Knapsack copyKnapsack(Knapsack);
 int* itensKnapsack(Knapsack knapsack);
 int* itemComplement(Knapsack knapsack);

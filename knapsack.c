@@ -25,6 +25,15 @@ Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     return knapsack;
 }
 
+//  Remove a Mochila
+void terminateKnapsack(Knapsack* knapsack) {
+    for (int i = 0; i < knapsack->qtdItens; i++)
+        free(knapsack->conflicts[i]);
+    free(knapsack->conflicts);
+    free(Knapsack->itens);
+    free(*Knapsack);
+}
+
 //  Copia Uma Mochila
 Knapsack copyKnapsack(Knapsack knapsack) {
     Knapsack copy;
