@@ -16,6 +16,7 @@ typedef struct {
 
 Knapsack initializeKnapsack(int, int, int**);
 Knapsack copyKnapsack(Knapsack);
+int* itemComplement(Knapsack knapsack);
 int conflictCheck(Knapsack, Item);
 int addItem(Knapsack*, Item);
 int removeItem(Knapsack*, Item);

@@ -36,16 +36,32 @@ Knapsack copyKnapsack(Knapsack knapsack) {
     return copy;
 }
 
+//  Retorna vetor de elementos que nao estao na Mochila
+int* itemComplement(Knapsack knapsack) {
+    int complSize = knapsack.itensNum - knapsack.conflictNum;
+    int* complement = (int*) malloc(complSize * sizeof(int));
+    int j = 0;
+
+    for (int i = 0; i < knapsack.itensNum && j < complSize ; i++)
+        if (knapsack.itens[i] == 0) {
+            complement[j] = i;
+            j++;
+        }
+
+    return complement;
+}
+
 //  Verifica por Conflitos na Mochila
 int conflictCheck(Knapsack knapsack, Item item) {
     if (knapsack.itens[item.itemId] == 1 || knapsack.capacity < knapsack.weight + item.weight)
         return 0;
-    else
-        for (int i = 0; i < knapsack.itensNum; i++) {
+    else {
+        for (int i = 0; i < knapsack.itensNum && i != item.itemId; i++) {
             if (knapsack.itens[i] == 1 && (knapsack.conflicts[item.itemId][i] == 1 ||
                 knapsack.conflicts[i][item.itemId] == 1))
                 return 0;
         }
+    }
     return 1;
 }
 
