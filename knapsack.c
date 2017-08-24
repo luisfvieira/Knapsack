@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "knapsack.h"
 
 //  Inicializa a  Mochila
@@ -5,6 +7,7 @@ Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     Knapsack knapsack;
 
     knapsack.itensNum = itensNum;
+    knapsack.qtdItens = 0;
     knapsack.weight = 0;
     knapsack.profit = 0;
     knapsack.capacity = capacity;
@@ -38,7 +41,7 @@ Knapsack copyKnapsack(Knapsack knapsack) {
 
 //  Retorna vetor de elementos que nao estao na Mochila
 int* itemComplement(Knapsack knapsack) {
-    int complSize = knapsack.itensNum - knapsack.conflictNum;
+    int complSize = knapsack.itensNum - knapsack.qtdItens;
     int* complement = (int*) malloc(complSize * sizeof(int));
     int j = 0;
 
@@ -57,9 +60,10 @@ int conflictCheck(Knapsack knapsack, Item item) {
         return 0;
     else {
         for (int i = 0; i < knapsack.itensNum && i != item.itemId; i++) {
-            if (knapsack.itens[i] == 1 && (knapsack.conflicts[item.itemId][i] == 1 ||
-                knapsack.conflicts[i][item.itemId] == 1))
-                return 0;
+            if (knapsack.itens[i] == 1) {
+                if (knapsack.conflicts[item.itemId][i] == 1 || knapsack.conflicts[i][item.itemId] == 1)
+                    return 0;
+            }
         }
     }
     return 1;
@@ -71,6 +75,7 @@ int addItem(Knapsack* knapsack, Item item) {
         knapsack->weight += item.weight;
         knapsack->profit += item.profit;
         knapsack->itens[item.itemId] = 1;
+        knapsack->qtdItens++;
 
         return 1;
     }
@@ -83,10 +88,27 @@ int removeItem(Knapsack* knapsack, Item item) {
         knapsack->weight -= item.weight;
         knapsack->profit -= item.profit;
         knapsack->itens[item.itemId] = 0;
+        knapsack->qtdItens--;
 
         return 1;
     }
     return 0;
+}
+
+//  Remove o mais conflitante
+int removeMoreConflitant(Knapsack* knapsack, Item* itens) {
+    int *conflictSum = calloc(knapsack->itensNum, sizeof(int));
+    int moreConfSum = 0, conflitantId;
+
+    for (int i = 0; i < knapsack->itensNum; i++)
+        for (int j = 0; i < knapsack->itensNum; j++)
+            conflictSum[i] += knapsack->conflicts[i][j];
+    for (int i = 0; i < knapsack->itensNum; i++)
+        if (moreConfSum < conflictSum[i]) {
+            moreConfSum = conflictSum[i];
+            conflitantId = i;
+        }
+    return removeItem(knapsack, itens[conflitantId]);
 }
 
 //  Troca um Item da Mochila, por Outro
@@ -102,4 +124,22 @@ int exchangeItem(Knapsack* knapsack, Item item1, Item item2) {
         return 1;
     }
     return 0;
+}
+
+void printKnapsack(Knapsack knapsack) {
+    printf("Knapsack\nCapacity: %d\nProfit: %d\nWeight: %d\n", knapsack.capacity,
+        knapsack.profit, knapsack.weight);
+    printf("ItensNum: %d\n", knapsack.itensNum);
+    for (int i = 0; i < knapsack.itensNum; i++)
+        printf("%d ", i % 10);
+    printf("\n");
+    for (int i = 0; i < knapsack.itensNum; i++) {
+        printf("%d ", knapsack.itens[i]);
+    }
+    printf("\nGraph\n");
+    for (int i = 0; i < knapsack.itensNum; i++) {
+        for (int j = 0; j < knapsack.itensNum; j++)
+            printf("%d ", knapsack.conflicts[i][j]);
+        printf("\n");
+    }
 }

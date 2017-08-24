@@ -9,6 +9,7 @@ typedef struct {
     int* itens;
     int ** conflicts;
     int itensNum;
+    int qtdItens;
     int weight;
     int capacity;
     int profit;
@@ -21,5 +22,7 @@ int conflictCheck(Knapsack, Item);
 int addItem(Knapsack*, Item);
 int removeItem(Knapsack*, Item);
 int exchangeItem(Knapsack*, Item, Item);
+void printKnapsack(Knapsack);
+
 
 #endif
