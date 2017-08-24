@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "knapsack.h"
 
@@ -37,6 +38,20 @@ Knapsack copyKnapsack(Knapsack knapsack) {
             copy.conflicts[i][j] = knapsack.conflicts[i][j];
 
     return copy;
+}
+
+//  Retorna vetor de elementos que estao na Mochila
+int* itensKnapsack(Knapsack knapsack) {
+    int* itens = (int*) malloc(knapsack.qtdItens * sizeof(int));
+    int j = 0;
+
+    for (int i = 0; i < knapsack.qtdItens && j < knapsack.qtdItens; i++)
+        if (knapsack.itens[i] == 1) {
+            itens[j] = i;
+            j++;
+        }
+
+    return itens;
 }
 
 //  Retorna vetor de elementos que nao estao na Mochila

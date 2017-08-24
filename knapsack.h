@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "item.h"
 
 #ifndef _KNAPSACK_H
@@ -17,10 +15,12 @@ typedef struct {
 
 Knapsack initializeKnapsack(int, int, int**);
 Knapsack copyKnapsack(Knapsack);
+int* itensKnapsack(Knapsack knapsack);
 int* itemComplement(Knapsack knapsack);
 int conflictCheck(Knapsack, Item);
 int addItem(Knapsack*, Item);
 int removeItem(Knapsack*, Item);
+int removeMoreConflitant(Knapsack*, Item*);
 int exchangeItem(Knapsack*, Item, Item);
 void printKnapsack(Knapsack);
 
