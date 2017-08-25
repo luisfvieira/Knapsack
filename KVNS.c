@@ -13,18 +13,17 @@ KVNS initializeKVNS(KVNS k, int kMax, int movMax) {
 //  Atualiza o Valor de K para o proximo
 KVNS nextK(KVNS k) {
     k.k++;
-    k.movement++;
-    if (k.k > k.kMax && k.movement < k.movMax)
+    if (k.k >= k.kMax) {
         k.k = 0;
-    if (k.movement > k.movMax && k.k < k.kMax)
-        k.movement = 0;
+        k.movement++;
+    }
 
     return k;
 }
 
 //  Verifica se k atingiu o kMax (maximo)
 int checkK(KVNS k) {
-    if (k.k < k.kMax && k.movement < k.kMax)
+    if (k.k < k.kMax && k.movement < k.movMax)
         return 1;
     return 0;
 }
