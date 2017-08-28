@@ -25,15 +25,6 @@ Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     return knapsack;
 }
 
-//  Remove a Mochila
-void terminateKnapsack(Knapsack* knapsack) {
-    for (int i = 0; i < knapsack->qtdItens; i++)
-        free(knapsack->conflicts[i]);
-    free(knapsack->conflicts);
-    free(Knapsack->itens);
-    free(*Knapsack);
-}
-
 //  Copia Uma Mochila
 Knapsack copyKnapsack(Knapsack knapsack) {
     Knapsack copy;
@@ -54,11 +45,12 @@ int* itensKnapsack(Knapsack knapsack) {
     int* itens = (int*) malloc(knapsack.qtdItens * sizeof(int));
     int j = 0;
 
-    for (int i = 0; i < knapsack.qtdItens && j < knapsack.qtdItens; i++)
+    for (int i = 0; i < knapsack.itensNum && j < knapsack.qtdItens; i++) {
         if (knapsack.itens[i] == 1) {
             itens[j] = i;
             j++;
         }
+    }
 
     return itens;
 }
@@ -69,28 +61,34 @@ int* itemComplement(Knapsack knapsack) {
     int* complement = (int*) malloc(complSize * sizeof(int));
     int j = 0;
 
-    for (int i = 0; i < knapsack.itensNum && j < complSize ; i++)
+    for (int i = 0; i < knapsack.itensNum && j < complSize ; i++) {
         if (knapsack.itens[i] == 0) {
             complement[j] = i;
             j++;
         }
-
+    }
     return complement;
 }
 
 //  Verifica por Conflitos na Mochila
 int conflictCheck(Knapsack knapsack, Item item) {
-    if (knapsack.itens[item.itemId] == 1 || knapsack.capacity < knapsack.weight + item.weight)
-        return 0;
-    else {
-        for (int i = 0; i < knapsack.itensNum && i != item.itemId; i++) {
-            if (knapsack.itens[i] == 1) {
-                if (knapsack.conflicts[item.itemId][i] == 1 || knapsack.conflicts[i][item.itemId] == 1)
+    int i, j = item.itemId, k;
+    int* itensKnap = itensKnapsack(knapsack);
+
+    if (knapsack.qtdItens == 0) {
+        return 1;
+    }
+    else if (knapsack.itens[j] == 0) {
+        if (knapsack.capacity >= knapsack.weight + item.weight) {
+            for (i = 0; i < knapsack.qtdItens; i++) {
+                k = itensKnap[i];
+                if (knapsack.conflicts[k][j] == 1 || knapsack.conflicts[j][k] == 1)
                     return 0;
             }
+            return 1;
         }
     }
-    return 1;
+    return 0;
 }
 
 //  Adiciona um Item a Mochila
@@ -125,7 +123,7 @@ int removeMoreConflitant(Knapsack* knapsack, Item* itens) {
     int moreConfSum = 0, conflitantId;
 
     for (int i = 0; i < knapsack->itensNum; i++)
-        for (int j = 0; i < knapsack->itensNum; j++)
+        for (int j = 0; j < knapsack->itensNum; j++)
             conflictSum[i] += knapsack->conflicts[i][j];
     for (int i = 0; i < knapsack->itensNum; i++)
         if (moreConfSum < conflictSum[i]) {
@@ -150,20 +148,23 @@ int exchangeItem(Knapsack* knapsack, Item item1, Item item2) {
     return 0;
 }
 
-void printKnapsack(Knapsack knapsack) {
+void printKnapsack(Knapsack knapsack, int graph) {
     printf("Knapsack\nCapacity: %d\nProfit: %d\nWeight: %d\n", knapsack.capacity,
         knapsack.profit, knapsack.weight);
-    printf("ItensNum: %d\n", knapsack.itensNum);
+    printf("Qtd: %d\nItensNum: %d\n", knapsack.qtdItens, knapsack.itensNum);
     for (int i = 0; i < knapsack.itensNum; i++)
         printf("%d ", i % 10);
     printf("\n");
     for (int i = 0; i < knapsack.itensNum; i++) {
         printf("%d ", knapsack.itens[i]);
     }
-    printf("\nGraph\n");
-    for (int i = 0; i < knapsack.itensNum; i++) {
-        for (int j = 0; j < knapsack.itensNum; j++)
-            printf("%d ", knapsack.conflicts[i][j]);
-        printf("\n");
+    if (graph == 1) {
+        printf("\nGraph\n");
+        for (int i = 0; i < knapsack.itensNum; i++) {
+            for (int j = 0; j < knapsack.itensNum; j++)
+                printf("%d ", knapsack.conflicts[i][j]);
+            printf("\n");
+
+        }
     }
 }

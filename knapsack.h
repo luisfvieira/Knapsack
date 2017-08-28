@@ -14,7 +14,6 @@ typedef struct {
 } Knapsack;
 
 Knapsack initializeKnapsack(int, int, int**);
-void terminateKnapsack(Knapsack*);
 Knapsack copyKnapsack(Knapsack);
 int* itensKnapsack(Knapsack knapsack);
 int* itemComplement(Knapsack knapsack);
@@ -23,7 +22,7 @@ int addItem(Knapsack*, Item);
 int removeItem(Knapsack*, Item);
 int removeMoreConflitant(Knapsack*, Item*);
 int exchangeItem(Knapsack*, Item, Item);
-void printKnapsack(Knapsack);
+void printKnapsack(Knapsack, int);
 
 
 #endif
