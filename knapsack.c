@@ -1,6 +1,6 @@
 #include "knapsack.h"
 
-//  Inicializa a  Mochila
+//  Initialize Knapsack struct
 Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     Knapsack knapsack;
 
@@ -21,7 +21,7 @@ Knapsack initializeKnapsack(int itensNum, int capacity, int ** conflicts) {
     return knapsack;
 }
 
-//  Copia Uma Mochila
+//  Copies an Knapsack
 Knapsack copyKnapsack(Knapsack knapsack) {
     Knapsack copy;
 
@@ -36,7 +36,7 @@ Knapsack copyKnapsack(Knapsack knapsack) {
     return copy;
 }
 
-//  Verifica por Conflitos na Mochila
+//  Conflict verification
 int conflictCheck(Knapsack knapsack, Item item) {
     if (knapsack.itens[item.itemId] == 1 || knapsack.capacity < knapsack.weight + item.weight)
         return 0;
@@ -49,7 +49,7 @@ int conflictCheck(Knapsack knapsack, Item item) {
     return 1;
 }
 
-//  Adiciona um Item a Mochila
+//  Add item, increasing weight and profit
 int addItem(Knapsack* knapsack, Item item) {
     if (conflictCheck(*knapsack, item) == 1) {
         knapsack->weight += item.weight;
@@ -61,7 +61,7 @@ int addItem(Knapsack* knapsack, Item item) {
     return 0;
 }
 
-//  Remove um Item da Mochila
+//  Remove item, decreasing weight and profit
 int removeItem(Knapsack* knapsack, Item item) {
     if (knapsack->itens[item.itemId] == 1) {
         knapsack->weight -= item.weight;

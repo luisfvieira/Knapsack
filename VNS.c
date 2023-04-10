@@ -38,7 +38,7 @@ int NeighborhoodChange(Knapsack *current, Knapsack kBest, int k) {
     return k;
 }
 /**
-    TODO elaborar metodo para estimar o kMax para instancias
+    TODO create a method for kMax estimation
 **/
 Knapsack BVNS(Knapsack knapsack, Item *itens, int kMax, double tMax) {
     Knapsack kShake, kBest, currentKnapsack;

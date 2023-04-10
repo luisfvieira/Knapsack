@@ -2,7 +2,7 @@
 #include <time.h>
 
 /**
-    Verifica se o tempo limite foi atingido.
+    There is a time limit. This function verifies if it was reached
 */
 int checktime(double timeLimit, clock_t initialTime) {
     clock_t finalTime = clock();
