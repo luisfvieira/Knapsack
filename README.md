@@ -5,4 +5,4 @@ Given a set of items, each with a weight and a value, determine which items to i
 
 The code is my own work, test instances not.
 
-Part of my project in Algorithm Design during College, don't copy and paste my work pretending to be yours.
+Part of my project in Algorithm Design during College.
